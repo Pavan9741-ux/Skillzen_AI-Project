@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SkillZen AI Student Portal - Get personalized internship recommendations">
+  <title>Student Portal - SkillZen AI</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/glassmorphism.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
+</head>
+<body>
+
+  <!-- Header -->
+  <header style="padding: 1.5rem; position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--glass-bg-primary); backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border);">
+    <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+      <a href="/" style="text-decoration: none; display: flex; align-items: center; gap: 0.5rem;">
+        <div style="width: 40px; height: 40px; background: var(--gradient-primary); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">🎯</div>
+        <span style="font-weight: 700; font-size: 1.2rem; color: var(--text-primary);">SkillZen AI</span>
+      </a>
+      <a href="/" class="btn btn-glass" style="padding: 0.5rem 1.5rem;">← Back to Home</a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main style="margin-top: 100px; padding: 2rem 0; min-height: calc(100vh - 100px);">
+    <div class="container" style="max-width: 900px;">
+      
+      <!-- Progress Bar -->
+      <div class="progress-bar fade-in">
+        <div class="progress-step active">
+          <div class="progress-step-circle">1</div>
+          <div class="progress-step-label">Academic</div>
+        </div>
+        <div class="progress-step">
+          <div class="progress-step-circle">2</div>
+          <div class="progress-step-label">Languages</div>
+        </div>
+        <div class="progress-step">
+          <div class="progress-step-circle">3</div>
+          <div class="progress-step-label">Skills</div>
+        </div>
+        <div class="progress-step">
+          <div class="progress-step-circle">4</div>
+          <div class="progress-step-label">Results</div>
+        </div>
+      </div>
+
+      <!-- Step 1: CGPA/SGPA Input -->
+      <div class="form-step slide-in-up" data-step="1">
+        <div class="glass-card glass-card-lg">
+          <h2 class="text-center">📚 Academic Performance</h2>
+          <p class="text-center" style="color: var(--text-secondary); margin-bottom: 3rem;">
+            Tell us about your academic achievements
+          </p>
+
+          <div class="form-group">
+            <label class="form-label">CGPA (Cumulative Grade Point Average)</label>
+            <div class="range-slider">
+              <input type="range" id="cgpa-slider" min="0" max="10" step="0.1" value="7.0">
+              <span class="range-value" id="cgpa-value">7.0</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">SGPA (Semester Grade Point Average)</label>
+            <div class="range-slider">
+              <input type="range" id="sgpa-slider" min="0" max="10" step="0.1" value="7.0">
+              <span class="range-value" id="sgpa-value">7.0</span>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" data-action="next" style="width: 100%; margin-top: 2rem;">
+            Continue →
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 2: Programming Languages -->
+      <div class="form-step hidden" data-step="2">
+        <div class="glass-card glass-card-lg">
+          <h2 class="text-center">💻 Programming Languages</h2>
+          <p class="text-center" style="color: var(--text-secondary); margin-bottom: 2rem;">
+            Select the programming languages you know
+          </p>
+
+          <div id="languages-container" class="checkbox-grid">
+            <!-- Languages will be dynamically loaded here -->
+            <div class="skeleton" style="height: 60px; border-radius: 12px;"></div>
+            <div class="skeleton" style="height: 60px; border-radius: 12px;"></div>
+            <div class="skeleton" style="height: 60px; border-radius: 12px;"></div>
+          </div>
+
+          <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+            <button class="btn btn-glass" data-action="prev" style="flex: 1;">
+              ← Previous
+            </button>
+            <button class="btn btn-primary" data-action="next" style="flex: 2;">
+              Continue →
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Skills Selection -->
+      <div class="form-step hidden" data-step="3">
+        <div class="glass-card glass-card-lg">
+          <h2 class="text-center">🛠️ Your Skills</h2>
+          <p class="text-center" style="color: var(--text-secondary); margin-bottom: 2rem;">
+            Select your technical and non-technical skills
+          </p>
+
+          <div id="technical-skills-container" style="margin-bottom: 3rem;">
+            <!-- Technical skills will be dynamically loaded here -->
+          </div>
+
+          <div id="non-technical-skills-container">
+            <!-- Non-technical skills will be dynamically loaded here -->
+          </div>
+
+          <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+            <button class="btn btn-glass" data-action="prev" style="flex: 1;">
+              ← Previous
+            </button>
+            <button class="btn btn-primary" data-action="submit" style="flex: 2;">
+              Get Recommendations 🚀
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4: Results -->
+      <div class="form-step hidden" data-step="4">
+        <div class="text-center" style="margin-bottom: 2rem;">
+          <h2>🎉 Your Personalized Recommendations</h2>
+          <p style="color: var(--text-secondary);">
+            Based on your profile, here are the best matches for you
+          </p>
+        </div>
+
+        <div id="results-container">
+          <!-- Results will be dynamically loaded here -->
+        </div>
+
+        <div class="text-center" style="margin-top: 2rem;">
+          <button class="btn btn-glass" data-action="restart">
+            ← Start New Search
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer style="padding: 2rem; text-align: center; color: var(--text-muted); border-top: 1px solid var(--glass-border); margin-top: 4rem;">
+    <p>&copy; 2026 SkillZen AI. Built for VTU Students. Wish you all the best from skillzen team.</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="{{ url_for('static', filename='js/api.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

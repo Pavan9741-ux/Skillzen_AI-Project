@@ -1,0 +1,318 @@
+/* ============================================
+   SkillZen AI - Glassmorphism Styles
+   Advanced Glass Effects & Morphism
+   ============================================ */
+
+/* ============ Glass Variants ============ */
+
+/* Ultra Glass - Maximum transparency */
+.glass-ultra {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(30px) saturate(200%);
+  -webkit-backdrop-filter: blur(30px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 8px 32px 0 rgba(31, 38, 135, 0.37),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Standard Glass */
+.glass-standard {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 
+    0 8px 32px 0 rgba(31, 38, 135, 0.37),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Frosted Glass */
+.glass-frosted {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(15px) saturate(150%);
+  -webkit-backdrop-filter: blur(15px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 
+    0 8px 32px 0 rgba(31, 38, 135, 0.37),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+}
+
+/* ============ Claymorphism ============ */
+.clay-card {
+  background: var(--glass-bg-primary);
+  border-radius: 24px;
+  box-shadow:
+    12px 12px 24px rgba(0, 0, 0, 0.2),
+    -12px -12px 24px rgba(255, 255, 255, 0.05),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.1),
+    inset -2px -2px 4px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.clay-card:hover {
+  box-shadow:
+    16px 16px 32px rgba(0, 0, 0, 0.25),
+    -16px -16px 32px rgba(255, 255, 255, 0.08),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.15),
+    inset -2px -2px 4px rgba(0, 0, 0, 0.25);
+  transform: translateY(-2px);
+}
+
+/* Clay Button */
+.clay-button {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  border-radius: 16px;
+  padding: 1rem 2rem;
+  border: none;
+  box-shadow:
+    8px 8px 16px rgba(0, 0, 0, 0.2),
+    -8px -8px 16px rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.clay-button:active {
+  box-shadow:
+    inset 4px 4px 8px rgba(0, 0, 0, 0.2),
+    inset -4px -4px 8px rgba(255, 255, 255, 0.05);
+  transform: scale(0.98);
+}
+
+/* ============ Neumorphism ============ */
+.neu-card {
+  background: linear-gradient(145deg, #1a1639, #0e0b21);
+  border-radius: 24px;
+  box-shadow:
+    20px 20px 60px #0a0816,
+    -20px -20px 60px #26215c;
+  padding: 2rem;
+  transition: all 0.3s ease;
+}
+
+.neu-card:hover {
+  box-shadow:
+    25px 25px 75px #0a0816,
+    -25px -25px 75px #26215c;
+}
+
+/* ============ Liquid Glass ============ */
+.liquid-container {
+  position: relative;
+  background: var(--glass-bg-primary);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.liquid-container::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    0deg,
+    transparent,
+    rgba(102, 126, 234, 0.2),
+    rgba(118, 75, 162, 0.2),
+    transparent
+  );
+  animation: liquidRotate 6s linear infinite;
+}
+
+@keyframes liquidRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.liquid-content {
+  position: relative;
+  z-index: 1;
+  padding: 2rem;
+}
+
+/* ============ Glass Glow Effects ============ */
+.glass-glow-purple {
+  box-shadow: 
+    0 8px 32px rgba(102, 126, 234, 0.3),
+    0 0 60px rgba(102, 126, 234, 0.2);
+}
+
+.glass-glow-pink {
+  box-shadow: 
+    0 8px 32px rgba(240, 147, 251, 0.3),
+    0 0 60px rgba(240, 147, 251, 0.2);
+}
+
+.glass-glow-blue {
+  box-shadow: 
+    0 8px 32px rgba(79, 172, 254, 0.3),
+    0 0 60px rgba(79, 172, 254, 0.2);
+}
+
+/* ============ Gradient Glass ============ */
+.glass-gradient-purple {
+  background: linear-gradient(
+    135deg,
+    rgba(102, 126, 234, 0.15) 0%,
+    rgba(118, 75, 162, 0.15) 100%
+  );
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(102, 126, 234, 0.3);
+}
+
+.glass-gradient-pink {
+  background: linear-gradient(
+    135deg,
+    rgba(240, 147, 251, 0.15) 0%,
+    rgba(245, 87, 108, 0.15) 100%
+  );
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(240, 147, 251, 0.3);
+}
+
+.glass-gradient-blue {
+  background: linear-gradient(
+    135deg,
+    rgba(79, 172, 254, 0.15) 0%,
+    rgba(0, 242, 254, 0.15) 100%
+  );
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(79, 172, 254, 0.3);
+}
+
+/* ============ Holographic Glass ============ */
+.holographic-card {
+  position: relative;
+  background: var(--glass-bg-primary);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  overflow: hidden;
+}
+
+.holographic-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(102, 126, 234, 0.3) 50%,
+    transparent 70%
+  );
+  background-size: 200% 200%;
+  animation: holographicShift 3s ease-in-out infinite;
+}
+
+@keyframes holographicShift {
+  0%, 100% { background-position: 0% 0%; }
+  50% { background-position: 100% 100%; }
+}
+
+/* ============ Shimmer Effect ============ */
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  animation: shimmerSlide 2s infinite;
+}
+
+@keyframes shimmerSlide {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* ============ Glass Borders ============ */
+.glass-border-gradient {
+  position: relative;
+  background: var(--glass-bg-primary);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  padding: 2px;
+}
+
+.glass-border-gradient::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  padding: 2px;
+  background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.glass-border-content {
+  position: relative;
+  background: var(--glass-bg-primary);
+  backdrop-filter: blur(20px);
+  border-radius: 22px;
+  padding: 2rem;
+}
+
+/* ============ Frosted Overlay ============ */
+.frosted-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 999;
+}
+
+/* ============ Light Mode Adjustments ============ */
+[data-theme="light"] .glass-ultra {
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 
+    0 8px 32px 0 rgba(31, 38, 135, 0.2),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.5);
+}
+
+[data-theme="light"] .glass-standard {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="light"] .clay-card {
+  background: linear-gradient(145deg, #f5f7fa, #e8ecf0);
+  box-shadow:
+    12px 12px 24px rgba(0, 0, 0, 0.1),
+    -12px -12px 24px rgba(255, 255, 255, 0.7),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.5),
+    inset -2px -2px 4px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .neu-card {
+  background: linear-gradient(145deg, #ffffff, #e6e6e6);
+  box-shadow:
+    20px 20px 60px #d9d9d9,
+    -20px -20px 60px #ffffff;
+}

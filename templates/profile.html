@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile - SkillZen AI{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <!-- Profile Header -->
+    <div class="profile-header">
+        <div class="profile-header-content" id="profile-header-content">
+            <!-- Profile header will be rendered by JavaScript -->
+            <div class="skeleton" style="width: 150px; height: 150px; border-radius: 50%;"></div>
+            <div style="flex: 1;">
+                <div class="skeleton" style="height: 40px; width: 300px; margin-bottom: 1rem;"></div>
+                <div class="skeleton" style="height: 20px; width: 200px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Stats -->
+    <div class="profile-stats" id="profile-stats">
+        <!-- Stats will be rendered by JavaScript -->
+    </div>
+
+    <!-- Profile Completeness -->
+    <div class="completeness-card" id="completeness-card">
+        <!-- Completeness will be rendered by JavaScript -->
+    </div>
+
+    <!-- Profile Sections -->
+    <div class="profile-sections">
+        <!-- Main Content -->
+        <div class="profile-main">
+            <!-- Skills Section -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-code"></i>
+                        Skills
+                    </h2>
+                    <button class="btn btn-glass" onclick="profileManager.editSkills()">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                </div>
+                
+                <div id="technical-skills" style="margin-bottom: 2rem;">
+                    <!-- Technical skills will be rendered here -->
+                </div>
+                
+                <div id="programming-languages" style="margin-bottom: 2rem;">
+                    <!-- Programming languages will be rendered here -->
+                </div>
+                
+                <div id="soft-skills">
+                    <!-- Soft skills will be rendered here -->
+                </div>
+            </div>
+
+            <!-- Projects Section -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-project-diagram"></i>
+                        Projects
+                    </h2>
+                    <button class="btn btn-glass" onclick="profileManager.addProject()">
+                        <i class="fas fa-plus"></i> Add Project
+                    </button>
+                </div>
+                
+                <div class="projects-list" id="projects-list">
+                    <!-- Projects will be rendered here -->
+                </div>
+            </div>
+
+            <!-- Certifications Section -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-certificate"></i>
+                        Certifications
+                    </h2>
+                    <button class="btn btn-glass" onclick="profileManager.addCertification()">
+                        <i class="fas fa-plus"></i> Add Certification
+                    </button>
+                </div>
+                
+                <div class="certifications-list" id="certifications-list">
+                    <!-- Certifications will be rendered here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="profile-sidebar">
+            <!-- Portfolio Links -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h3 class="section-title">
+                        <i class="fas fa-link"></i>
+                        Links
+                    </h3>
+                </div>
+                
+                <div class="portfolio-links" id="portfolio-links">
+                    <a href="#" class="portfolio-link-item">
+                        <div class="portfolio-icon" style="background: linear-gradient(135deg, #333 0%, #000 100%);">
+                            <i class="fab fa-github"></i>
+                        </div>
+                        <div class="portfolio-link-info">
+                            <div class="portfolio-link-name">GitHub</div>
+                            <div class="portfolio-link-url">Connect GitHub</div>
+                        </div>
+                    </a>
+                    
+                    <a href="#" class="portfolio-link-item">
+                        <div class="portfolio-icon" style="background: linear-gradient(135deg, #0077b5 0%, #00a0dc 100%);">
+                            <i class="fab fa-linkedin"></i>
+                        </div>
+                        <div class="portfolio-link-info">
+                            <div class="portfolio-link-name">LinkedIn</div>
+                            <div class="portfolio-link-url">Connect LinkedIn</div>
+                        </div>
+                    </a>
+                    
+                    <a href="#" class="portfolio-link-item">
+                        <div class="portfolio-icon" style="background: var(--gradient-primary);">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <div class="portfolio-link-info">
+                            <div class="portfolio-link-name">Portfolio</div>
+                            <div class="portfolio-link-url">Add website</div>
+                        </div>
+                    </a>
+                    
+                    <a href="#" class="portfolio-link-item">
+                        <div class="portfolio-icon" style="background: linear-gradient(135deg, #ea4335 0%, #fbbc04 100%);">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <div class="portfolio-link-info">
+                            <div class="portfolio-link-name">Resume</div>
+                            <div class="portfolio-link-url">Upload resume</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h3 class="section-title">
+                        <i class="fas fa-history"></i>
+                        Recent Activity
+                    </h3>
+                </div>
+                
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-text">Profile viewed by TCS</div>
+                            <div class="activity-time">2 hours ago</div>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-paper-plane"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-text">Applied to Infosys</div>
+                            <div class="activity-time">1 day ago</div>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-text">Profile completeness increased to 85%</div>
+                            <div class="activity-time">3 days ago</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Mode Toggle Button -->
+    <button class="edit-mode-toggle" id="edit-mode-toggle" title="Edit Profile">
+        <i class="fas fa-edit"></i>
+    </button>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/profile.js') }}"></script>
+<script>
+    // Initialize profile manager with user ID
+    // In production, this would come from authentication
+    const userId = 'student_demo_1'; // Replace with actual user ID
+    window.profileManager = new ProfileManager(userId);
+</script>
+{% endblock %}

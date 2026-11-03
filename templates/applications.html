@@ -1,0 +1,291 @@
+{% extends "base.html" %}
+
+{% block title %}My Applications - SkillZen AI{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+<style>
+.applications-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.applications-header {
+    margin-bottom: 2rem;
+}
+
+.status-tabs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid var(--glass-border);
+    overflow-x: auto;
+}
+
+.status-tab {
+    padding: 1rem 2rem;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-weight: 600;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.status-tab:hover {
+    color: var(--text-primary);
+}
+
+.status-tab.active {
+    color: var(--theme-primary);
+}
+
+.status-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--theme-primary);
+}
+
+.application-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.application-card:hover {
+    transform: translateX(5px);
+    border-color: var(--theme-secondary);
+}
+
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 1rem;
+}
+
+.company-info h3 {
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.company-meta {
+    display: flex;
+    gap: 1.5rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.status-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.status-badge.applied {
+    background: rgba(33, 150, 243, 0.1);
+    color: #2196F3;
+}
+
+.status-badge.viewed {
+    background: rgba(255, 152, 0, 0.1);
+    color: #FF9800;
+}
+
+.status-badge.shortlisted {
+    background: rgba(156, 39, 176, 0.1);
+    color: #9C27B0;
+}
+
+.status-badge.interview {
+    background: rgba(255, 193, 7, 0.1);
+    color: #FFC107;
+}
+
+.status-badge.accepted {
+    background: rgba(76, 175, 80, 0.1);
+    color: #4CAF50;
+}
+
+.status-badge.rejected {
+    background: rgba(244, 67, 54, 0.1);
+    color: #F44336;
+}
+
+.app-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--glass-border);
+}
+
+.match-score {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--theme-primary);
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="applications-container">
+    <div class="applications-header">
+        <h1>My Applications</h1>
+        <p style="color: var(--text-secondary);">Track all your internship applications</p>
+    </div>
+
+    <!-- Status Tabs -->
+    <div class="status-tabs">
+        <button class="status-tab active" data-status="all">
+            All Applications <span class="badge">0</span>
+        </button>
+        <button class="status-tab" data-status="applied">
+            Applied <span class="badge">0</span>
+        </button>
+        <button class="status-tab" data-status="viewed">
+            Viewed <span class="badge">0</span>
+        </button>
+        <button class="status-tab" data-status="shortlisted">
+            Shortlisted <span class="badge">0</span>
+        </button>
+        <button class="status-tab" data-status="interview">
+            Interview <span class="badge">0</span>
+        </button>
+        <button class="status-tab" data-status="accepted">
+            Accepted <span class="badge">0</span>
+        </button>
+        <button class="status-tab" data-status="rejected">
+            Rejected <span class="badge">0</span>
+        </button>
+    </div>
+
+    <!-- Applications List -->
+    <div id="applications-list">
+        <!-- Demo Applications -->
+        <div class="application-card">
+            <div class="app-header">
+                <div class="company-info">
+                    <h3>Infosys Limited</h3>
+                    <div class="company-meta">
+                        <span><i class="fas fa-map-marker-alt"></i> Bangalore, Karnataka</span>
+                        <span><i class="fas fa-calendar"></i> Applied 3 days ago</span>
+                    </div>
+                </div>
+                <span class="status-badge viewed">Viewed</span>
+            </div>
+            
+            <p style="color: var(--text-secondary); margin: 1rem 0;">
+                Software Development Intern • 6 months • ₹15,000-20,000/month
+            </p>
+            
+            <div class="app-footer">
+                <div>
+                    <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.25rem;">Match Score</div>
+                    <div class="match-score">87.5%</div>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn btn-glass">
+                        <i class="fas fa-eye"></i> View Details
+                    </button>
+                    <button class="btn btn-glass">
+                        <i class="fas fa-external-link-alt"></i> Company Site
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="application-card">
+            <div class="app-header">
+                <div class="company-info">
+                    <h3>TCS (Tata Consultancy Services)</h3>
+                    <div class="company-meta">
+                        <span><i class="fas fa-map-marker-alt"></i> Bangalore, Karnataka</span>
+                        <span><i class="fas fa-calendar"></i> Applied 5 days ago</span>
+                    </div>
+                </div>
+                <span class="status-badge shortlisted">Shortlisted</span>
+            </div>
+            
+            <p style="color: var(--text-secondary); margin: 1rem 0;">
+                Technical Intern • 6 months • ₹10,000-15,000/month
+            </p>
+            
+            <div class="app-footer">
+                <div>
+                    <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.25rem;">Match Score</div>
+                    <div class="match-score">92.3%</div>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn btn-glass">
+                        <i class="fas fa-eye"></i> View Details
+                    </button>
+                    <button class="btn btn-glass">
+                        <i class="fas fa-external-link-alt"></i> Company Site
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="application-card">
+            <div class="app-header">
+                <div class="company-info">
+                    <h3>Amazon Development Centre</h3>
+                    <div class="company-meta">
+                        <span><i class="fas fa-map-marker-alt"></i> Bangalore, Karnataka</span>
+                        <span><i class="fas fa-calendar"></i> Applied 1 week ago</span>
+                    </div>
+                </div>
+                <span class="status-badge applied">Applied</span>
+            </div>
+            
+            <p style="color: var(--text-secondary); margin: 1rem 0;">
+                SDE Intern • 6 months • ₹50,000-70,000/month
+            </p>
+            
+            <div class="app-footer">
+                <div>
+                    <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.25rem;">Match Score</div>
+                    <div class="match-score">78.9%</div>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn btn-glass">
+                        <i class="fas fa-eye"></i> View Details
+                    </button>
+                    <button class="btn btn-glass">
+                        <i class="fas fa-external-link-alt"></i> Company Site
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Status tab switching
+document.querySelectorAll('.status-tab').forEach(tab => {
+    tab.addEventListener('click', (e) => {
+        document.querySelectorAll('.status-tab').forEach(t => t.classList.remove('active'));
+        e.target.classList.add('active');
+        
+        const status = e.target.dataset.status;
+        console.log('Filter by status:', status);
+        // Add filtering logic here
+    });
+});
+</script>
+{% endblock %}

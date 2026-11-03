@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SkillZen AI - Your Skills. Your Career. Our AI. Intelligent internship recommendations for VTU students.">
+  <title>SkillZen AI - Internship Advice Platform</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/glassmorphism.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
+  
+  <style>
+    /* Landing Page Specific Styles */
+    .landing-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .logo-container {
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .logo {
+      width: 120px;
+      height: 120px;
+      background: var(--gradient-primary);
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      color: white;
+      box-shadow: var(--shadow-lg), var(--shadow-glow);
+      animation: float 3s ease-in-out infinite;
+      margin: 0 auto;
+    }
+
+    .app-name {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 800;
+      margin: 2rem 0 1rem;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.2;
+    }
+
+    .tagline {
+      font-size: clamp(1.2rem, 3vw, 2rem);
+      color: var(--text-secondary);
+      margin-bottom: 3rem;
+      font-weight: 500;
+    }
+
+    .typewriter-container {
+      display: inline-block;
+      margin: 0 auto;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 4rem;
+      max-width: 1200px;
+    }
+
+    .feature-card {
+      background: var(--glass-bg-primary);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-lg), var(--shadow-glow);
+    }
+
+    .feature-icon {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 1rem;
+      background: var(--gradient-primary);
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+    }
+
+    .floating-shapes {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      overflow: hidden;
+      z-index: -1;
+    }
+
+    .shape {
+      position: absolute;
+      opacity: 0.1;
+      animation: floatShapes 20s infinite ease-in-out;
+    }
+
+    .shape-1 {
+      width: 300px;
+      height: 300px;
+      background: var(--gradient-primary);
+      border-radius: 50%;
+      top: 10%;
+      left: 5%;
+      animation-delay: 0s;
+    }
+
+    .shape-2 {
+      width: 200px;
+      height: 200px;
+      background: var(--gradient-secondary);
+      border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+      bottom: 15%;
+      right: 10%;
+      animation-delay: 3s;
+    }
+
+    .shape-3 {
+      width: 150px;
+      height: 150px;
+      background: var(--gradient-tertiary);
+      border-radius: 50%;
+      top: 60%;
+      left: 80%;
+      animation-delay: 6s;
+    }
+
+    @keyframes floatShapes {
+      0%, 100% {
+        transform: translate(0, 0) rotate(0deg);
+      }
+      33% {
+        transform: translate(30px, -30px) rotate(120deg);
+      }
+      66% {
+        transform: translate(-20px, 20px) rotate(240deg);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .cta-buttons {
+        flex-direction: column;
+        width: 100%;
+      }
+      
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  
+  <div class="landing-page">
+    <!-- Floating Background Shapes -->
+    <div class="floating-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+    </div>
+
+    <!-- Logo -->
+    <div class="logo-container fade-in">
+      <div class="logo">🎯</div>
+    </div>
+
+    <!-- App Name with Typewriter Effect -->
+    <div class="typewriter-container">
+      <h1 class="app-name fade-in-delay-1">SkillZen</h1>
+    </div>
+    <p class="fade-in-delay-2" style="font-size: 1.5rem; color: var(--text-muted); margin: 0.5rem 0;">
+      Internship Advice Platform
+    </p>
+
+    <!-- Tagline with Animation -->
+    <div class="typewriter-container fade-in-delay-2">
+      <p class="tagline">
+        <span class="typewriter">Your Skills. Your Career. Our AI.</span>
+      </p>
+    </div>
+
+    <!-- CTA Buttons -->
+    <div class="cta-buttons fade-in-delay-3">
+      <a href="/student" class="btn btn-primary">
+        🚀 Get Started
+      </a>
+      <a href="/admin" class="btn btn-glass">
+        🔐 Admin Login
+      </a>
+    </div>
+
+    <!-- Features -->
+    <div class="feature-grid stagger-children" style="margin-top: 5rem;">
+      <div class="feature-card glass-gradient-purple">
+        <div class="feature-icon">🤖</div>
+        <h3>AI-Powered Matching</h3>
+        <p style="color: var(--text-secondary);">
+          Advanced algorithms match your skills with perfect internship opportunities
+        </p>
+      </div>
+
+      <div class="feature-card glass-gradient-pink">
+        <div class="feature-icon">📊</div>
+        <h3>Skill Gap Analysis</h3>
+        <p style="color: var(--text-secondary);">
+          Know exactly what skills you need to learn for your dream company
+        </p>
+      </div>
+
+      <div class="feature-card glass-gradient-blue">
+        <div class="feature-icon">🎓</div>
+        <h3>VTU Approved</h3>
+        <p style="color: var(--text-secondary);">
+          All companies are verified and approved by VTU for internships
+        </p>
+      </div>
+
+      <div class="feature-card holographic-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Instant Results</h3>
+        <p style="color: var(--text-secondary);">
+          Get personalized recommendations in seconds with detailed insights
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+  
+  <script>
+    // Auto-redirect after 3 seconds (optional)
+    // Uncomment to enable auto-redirect
+    /*
+    setTimeout(() => {
+      window.location.href = '/student';
+    }, 3000);
+    */
+  </script>
+</body>
+</html>

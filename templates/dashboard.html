@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics Dashboard - SkillZen AI{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Header -->
+    <div class="dashboard-header">
+        <h1 class="dashboard-title">Analytics Dashboard</h1>
+        <p class="dashboard-subtitle">Real-time insights and platform statistics</p>
+    </div>
+
+    <!-- Dashboard Controls -->
+    <div class="dashboard-controls">
+        <div class="control-group">
+            <label class="control-label">Time Range:</label>
+            <select class="control-select" id="time-range-select">
+                <option value="7">Last 7 days</option>
+                <option value="30" selected>Last 30 days</option>
+                <option value="90">Last 90 days</option>
+                <option value="365">Last year</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <button class="btn btn-premium" onclick="location.reload()">
+                <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+        </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="kpi-grid" id="kpi-container">
+        <!-- KPI cards will be rendered here by JavaScript -->
+        <div class="kpi-card">
+            <div class="skeleton" style="height: 150px;"></div>
+        </div>
+        <div class="kpi-card">
+            <div class="skeleton" style="height: 150px;"></div>
+        </div>
+        <div class="kpi-card">
+            <div class="skeleton" style="height: 150px;"></div>
+        </div>
+    </div>
+
+    <!-- Charts Grid -->
+    <div class="charts-grid">
+        <!-- Timeline Chart -->
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3 class="chart-title">Platform Growth</h3>
+                <div class="chart-filter">
+                    <button class="chart-filter-btn" data-range="7">7D</button>
+                    <button class="chart-filter-btn active" data-range="30">30D</button>
+                    <button class="chart-filter-btn" data-range="90">90D</button>
+                </div>
+            </div>
+            <div class="chart-body">
+                <canvas id="timeline-chart" class="chart-canvas"></canvas>
+            </div>
+        </div>
+
+        <!-- Top Skills Chart -->
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3 class="chart-title">Top Skills in Demand</h3>
+            </div>
+            <div class="chart-body">
+                <canvas id="top-skills-chart" class="chart-canvas"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Skill Trends -->
+    <div class="skill-trends-card">
+        <div class="section-header">
+            <h2 class="section-title">
+                <i class="fas fa-fire"></i>
+                Trending Skills
+            </h2>
+            <a href="/skill-trends" class="btn btn-glass">
+                View All <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+        <div class="trends-grid" id="skill-trends-container">
+            <!-- Skill trends will be rendered here -->
+            <div class="trend-item">
+                <div class="skeleton" style="height: 120px;"></div>
+            </div>
+            <div class="trend-item">
+                <div class="skeleton" style="height: 120px;"></div>
+            </div>
+            <div class="trend-item">
+                <div class="skeleton" style="height: 120px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="section-header" style="margin-top: 3rem;">
+        <h2 class="section-title">
+            <i class="fas fa-bolt"></i>
+            Quick Actions
+        </h2>
+    </div>
+    
+    <div class="quick-actions">
+        <a href="/student" class="quick-action-btn">
+            <div class="quick-action-icon">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="quick-action-text">
+                <div class="quick-action-title">Find Internships</div>
+                <div class="quick-action-desc">Get AI recommendations</div>
+            </div>
+        </a>
+        
+        <a href="/profile" class="quick-action-btn">
+            <div class="quick-action-icon">
+                <i class="fas fa-user-edit"></i>
+            </div>
+            <div class="quick-action-text">
+                <div class="quick-action-title">Edit Profile</div>
+                <div class="quick-action-desc">Update your skills</div>
+            </div>
+        </a>
+        
+        <a href="/applications" class="quick-action-btn">
+            <div class="quick-action-icon">
+                <i class="fas fa-file-alt"></i>
+            </div>
+            <div class="quick-action-text">
+                <div class="quick-action-title">My Applications</div>
+                <div class="quick-action-desc">Track your progress</div>
+            </div>
+        </a>
+        
+        <a href="/learning-paths" class="quick-action-btn">
+            <div class="quick-action-icon">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="quick-action-text">
+                <div class="quick-action-title">Learn Skills</div>
+                <div class="quick-action-desc">Curated learning paths</div>
+            </div>
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

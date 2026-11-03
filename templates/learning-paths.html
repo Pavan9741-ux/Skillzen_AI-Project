@@ -1,0 +1,368 @@
+{% extends "base.html" %}
+
+{% block title %}Learning Paths - SkillZen AI{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+<style>
+.learning-hero {
+    background: var(--gradient-primary);
+    border-radius: 24px;
+    padding: 4rem 2rem;
+    text-align: center;
+    color: white;
+    margin-bottom: 3rem;
+}
+
+.learning-hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.path-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    transition: all 0.3s ease;
+}
+
+.path-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--glass-shadow);
+    border-color: var(--theme-secondary);
+}
+
+.path-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 1.5rem;
+}
+
+.path-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.path-meta {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.path-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-secondary);
+}
+
+.difficulty-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.difficulty-badge.beginner {
+    background: rgba(76, 175, 80, 0.1);
+    color: #4CAF50;
+}
+
+.difficulty-badge.intermediate {
+    background: rgba(255, 152, 0, 0.1);
+    color: #FF9800;
+}
+
+.difficulty-badge.advanced {
+    background: rgba(244, 67, 54, 0.1);
+    color: #F44336;
+}
+
+.learning-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.step-item {
+    display: flex;
+    align-items: start;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--glass-bg);
+    border-radius: 12px;
+    border-left: 4px solid var(--theme-secondary);
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    background: var(--gradient-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.step-content {
+    flex: 1;
+}
+
+.step-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.step-duration {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.resources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.resource-category {
+    padding: 1rem;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+}
+
+.resource-category h4 {
+    color: var(--theme-primary);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.resource-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.resource-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.resource-link:hover {
+    background: var(--glass-bg);
+    color: var(--theme-primary);
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Hero -->
+    <div class="learning-hero">
+        <h1>📚 Curated Learning Paths</h1>
+        <p>Step-by-step guides to master in-demand skills</p>
+    </div>
+
+    <!-- Learning Paths -->
+    <div id="learning-paths-container">
+        <!-- Paths will be loaded here -->
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+class LearningPathsPage {
+    constructor() {
+        this.paths = [];
+        this.init();
+    }
+
+    async init() {
+        await this.loadPaths();
+    }
+
+    async loadPaths() {
+        try {
+            const response = await fetch('/api/learning-paths');
+            const data = await response.json();
+            this.paths = data.learning_paths || [];
+            this.renderPaths();
+        } catch (error) {
+            console.error('Error loading learning paths:', error);
+        }
+    }
+
+    renderPaths() {
+        const container = document.getElementById('learning-paths-container');
+        if (!container) return;
+
+        if (this.paths.length === 0) {
+            container.innerHTML = `
+                <div style="text-align: center; padding: 4rem; color: var(--text-muted);">
+                    <i class="fas fa-book-open" style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.3;"></i>
+                    <p>No learning paths available yet</p>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = this.paths.map(path => `
+            <div class="path-card">
+                <div class="path-header">
+                    <div>
+                        <h2 class="path-title">${path.skill_name}</h2>
+                        <div class="path-meta">
+                            <div class="path-meta-item">
+                                <i class="fas fa-clock"></i>
+                                <span>${path.estimated_time}</span>
+                            </div>
+                            <div class="path-meta-item">
+                                <i class="fas fa-users"></i>
+                                <span>${path.completion_rate}% completion rate</span>
+                            </div>
+                            ${path.prerequisites && path.prerequisites.length > 0 ? `
+                                <div class="path-meta-item">
+                                    <i class="fas fa-list-check"></i>
+                                    <span>${path.prerequisites.length} prerequisites</span>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                    <span class="difficulty-badge ${path.difficulty}">${path.difficulty}</span>
+                </div>
+
+                ${path.prerequisites && path.prerequisites.length > 0 ? `
+                    <div style="margin-bottom: 1.5rem;">
+                        <strong style="color: var(--text-primary);">Prerequisites:</strong>
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem;">
+                            ${path.prerequisites.map(prereq => `
+                                <span style="padding: 0.25rem 0.75rem; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 8px; font-size: 0.9rem;">${prereq}</span>
+                            `).join('')}
+                        </div>
+                    </div>
+                ` : ''}
+
+                ${path.learning_steps && path.learning_steps.length > 0 ? `
+                    <div>
+                        <h3 style="margin-bottom: 1rem; color: var(--text-primary);">
+                            <i class="fas fa-route"></i> Learning Steps
+                        </h3>
+                        <div class="learning-steps">
+                            ${path.learning_steps.map(step => `
+                                <div class="step-item">
+                                    <div class="step-number">${step.step}</div>
+                                    <div class="step-content">
+                                        <div class="step-title">${step.title}</div>
+                                        <div class="step-duration">${step.duration}</div>
+                                        ${step.topics ? `
+                                            <div style="margin-top: 0.5rem;">
+                                                ${step.topics.slice(0, 3).join(' • ')}
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                ` : ''}
+
+                ${path.resources ? `
+                    <div>
+                        <h3 style="margin-bottom: 1rem; color: var(--text-primary);">
+                            <i class="fas fa-book-reader"></i> Learning Resources
+                        </h3>
+                        <div class="resources-grid">
+                            ${path.resources.courses ? `
+                                <div class="resource-category">
+                                    <h4><i class="fas fa-graduation-cap"></i> Courses</h4>
+                                    <div class="resource-list">
+                                        ${path.resources.courses.slice(0, 3).map(course => `
+                                            <a href="${course.url}" target="_blank" class="resource-link">
+                                                <i class="fas fa-external-link-alt"></i>
+                                                ${course.name} (${course.platform})
+                                            </a>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            ` : ''}
+                            
+                            ${path.resources.videos ? `
+                                <div class="resource-category">
+                                    <h4><i class="fas fa-video"></i> Videos</h4>
+                                    <div class="resource-list">
+                                        ${path.resources.videos.slice(0, 3).map(video => `
+                                            <a href="${video.url}" target="_blank" class="resource-link">
+                                                <i class="fab fa-youtube"></i>
+                                                ${video.name}
+                                            </a>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            ` : ''}
+                            
+                            ${path.resources.books ? `
+                                <div class="resource-category">
+                                    <h4><i class="fas fa-book"></i> Books</h4>
+                                    <div class="resource-list">
+                                        ${path.resources.books.slice(0, 3).map(book => `
+                                            <div class="resource-link">
+                                                <i class="fas fa-bookmark"></i>
+                                                ${book.name}
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            ` : ''}
+                            
+                            ${path.resources.practice ? `
+                                <div class="resource-category">
+                                    <h4><i class="fas fa-code"></i> Practice</h4>
+                                    <div class="resource-list">
+                                        ${path.resources.practice.slice(0, 3).map(practice => `
+                                            <a href="${practice.url}" target="_blank" class="resource-link">
+                                                <i class="fas fa-laptop-code"></i>
+                                                ${practice.name}
+                                            </a>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                ` : ''}
+
+                <div style="margin-top: 2rem; text-align: center;">
+                    <button class="btn btn-premium" onclick="alert('Start learning ${path.skill_name}!')">
+                        <i class="fas fa-play"></i> Start Learning Path
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+}
+
+const learningPathsPage = new LearningPathsPage();
+</script>
+{% endblock %}

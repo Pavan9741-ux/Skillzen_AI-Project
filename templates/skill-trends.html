@@ -1,0 +1,258 @@
+{% extends "base.html" %}
+
+{% block title %}Skill Trends - SkillZen AI{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+<style>
+.trends-hero {
+    background: var(--gradient-primary);
+    border-radius: 24px;
+    padding: 4rem 2rem;
+    text-align: center;
+    color: white;
+    margin-bottom: 3rem;
+}
+
+.trends-hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.trends-hero p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+.trend-filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 0.75rem 1.5rem;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.filter-btn:hover {
+    border-color: var(--theme-secondary);
+    transform: translateY(-2px);
+}
+
+.filter-btn.active {
+    background: var(--theme-primary);
+    color: white;
+    border-color: var(--theme-primary);
+}
+
+.trend-detail-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    padding: 2rem;
+}
+
+.trend-detail-content {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 2rem;
+    max-width: 800px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Hero Section -->
+    <div class="trends-hero">
+        <h1>🔥 Trending Skills & Technologies</h1>
+        <p>Stay ahead with the most in-demand skills in the industry</p>
+    </div>
+
+    <!-- Filters -->
+    <div class="trend-filters">
+        <button class="filter-btn active" data-status="all">All Skills</button>
+        <button class="filter-btn" data-status="hot">🔥 Hot</button>
+        <button class="filter-btn" data-status="emerging">⚡ Emerging</button>
+        <button class="filter-btn" data-status="stable">📊 Stable</button>
+        <button class="filter-btn" data-category="programming">Programming</button>
+        <button class="filter-btn" data-category="technical">Technical</button>
+    </div>
+
+    <!-- Skill Trends Grid -->
+    <div class="trends-grid" id="trends-grid">
+        <!-- Trends will be loaded here -->
+        <div class="trend-item">
+            <div class="skeleton" style="height: 150px;"></div>
+        </div>
+        <div class="trend-item">
+            <div class="skeleton" style="height: 150px;"></div>
+        </div>
+        <div class="trend-item">
+            <div class="skeleton" style="height: 150px;"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/skill-trends.js') }}"></script>
+<script>
+class SkillTrendsPage {
+    constructor() {
+        this.trends = [];
+        this.filteredTrends = [];
+        this.init();
+    }
+
+    async init() {
+        await this.loadTrends();
+        this.setupFilters();
+    }
+
+    async loadTrends() {
+        try {
+            const response = await fetch('/api/skill-trends');
+            const data = await response.json();
+            this.trends = data.trends || [];
+            this.filteredTrends = this.trends;
+            this.renderTrends();
+        } catch (error) {
+            console.error('Error loading trends:', error);
+        }
+    }
+
+    renderTrends() {
+        const container = document.getElementById('trends-grid');
+        if (!container) return;
+
+        if (this.filteredTrends.length === 0) {
+            container.innerHTML = '<p style="text-align: center; padding: 4rem; color: var(--text-muted);">No skills found</p>';
+            return;
+        }
+
+        container.innerHTML = this.filteredTrends.map(skill => `
+            <div class="trend-item stagger-item" onclick="skillTrendsPage.showDetails('${skill.name}')">
+                <div class="trend-header">
+                    <div class="trend-name">${skill.name}</div>
+                    <span class="trend-badge ${skill.trend_status}">${skill.trend_status}</span>
+                </div>
+                <div class="trend-stats">
+                    <div class="trend-stat">
+                        <div class="trend-stat-value">${skill.demand_count}</div>
+                        <div class="trend-stat-label">Companies</div>
+                    </div>
+                    <div class="trend-stat">
+                        <div class="trend-stat-value">${skill.student_count || 0}</div>
+                        <div class="trend-stat-label">Students</div>
+                    </div>
+                    <div class="trend-stat">
+                        <div class="trend-stat-value">${skill.difficulty_level || 'N/A'}</div>
+                        <div class="trend-stat-label">Difficulty</div>
+                    </div>
+                </div>
+                <div class="trend-growth ${skill.growth_rate >= 0 ? 'positive' : 'negative'}">
+                    <i class="fas fa-arrow-${skill.growth_rate >= 0 ? 'up' : 'down'}"></i>
+                    ${Math.abs(skill.growth_rate).toFixed(1)}% growth
+                </div>
+                ${skill.avg_salary_boost > 0 ? `
+                    <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--glass-border); text-align: center; color: var(--theme-secondary); font-weight: 600;">
+                        <i class="fas fa-rupee-sign"></i> +₹${(skill.avg_salary_boost / 1000).toFixed(0)}k avg boost
+                    </div>
+                ` : ''}
+            </div>
+        `).join('');
+    }
+
+    setupFilters() {
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const status = e.target.dataset.status;
+                const category = e.target.dataset.category;
+
+                // Update active state
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+
+                // Filter trends
+                if (status === 'all') {
+                    this.filteredTrends = this.trends;
+                } else if (status) {
+                    this.filteredTrends = this.trends.filter(t => t.trend_status === status);
+                } else if (category) {
+                    this.filteredTrends = this.trends.filter(t => t.category === category);
+                }
+
+                this.renderTrends();
+            });
+        });
+    }
+
+    showDetails(skillName) {
+        const skill = this.trends.find(t => t.name === skillName);
+        if (!skill) return;
+
+        const modal = document.createElement('div');
+        modal.className = 'trend-detail-modal';
+        modal.innerHTML = `
+            <div class="trend-detail-content">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2rem;">
+                    <div>
+                        <h2>${skill.name}</h2>
+                        <span class="trend-badge ${skill.trend_status}">${skill.trend_status}</span>
+                    </div>
+                    <button onclick="this.closest('.trend-detail-modal').remove()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-primary);">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <p style="color: var(--text-secondary); margin-bottom: 2rem;">${skill.description || 'No description available'}</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                    <div style="text-align: center; padding: 1rem; background: var(--glass-bg); border-radius: 12px;">
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--theme-primary);">${skill.demand_count}</div>
+                        <div style="color: var(--text-muted); font-size: 0.9rem;">Companies</div>
+                    </div>
+                    <div style="text-align: center; padding: 1rem; background: var(--glass-bg); border-radius: 12px;">
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--theme-primary);">${skill.growth_rate.toFixed(1)}%</div>
+                        <div style="color: var(--text-muted); font-size: 0.9rem;">Growth Rate</div>
+                    </div>
+                    <div style="text-align: center; padding: 1rem; background: var(--glass-bg); border-radius: 12px;">
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--theme-primary);">${skill.difficulty_level}</div>
+                        <div style="color: var(--text-muted); font-size: 0.9rem;">Difficulty</div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center;">
+                    <a href="/learning-paths?skill=${encodeURIComponent(skill.name)}" class="btn btn-premium">
+                        <i class="fas fa-graduation-cap"></i> View Learning Path
+                    </a>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+    }
+}
+
+const skillTrendsPage = new SkillTrendsPage();
+</script>
+{% endblock %}
